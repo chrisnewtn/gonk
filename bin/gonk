@@ -1,0 +1,46 @@
+#!/usr/bin/env node
+
+'use strict';
+
+const path = require('path');
+const fs = require('fs');
+const spawn = require('child_process').spawn;
+
+function runScript(runner, pathToTemplate) {
+  const args = [pathToTemplate].concat(process.argv.slice(3));
+  const options = {stdio: 'inherit'};
+  spawn(runner, args, options).on('close', process.exit);
+}
+
+function getUserHome() {
+  return process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME'];
+}
+
+const templatesDir = process.env.TEMPLATE_DIRECTORY || path.join(getUserHome(), '.gonk-scripts');
+
+if (!fs.existsSync(templatesDir)) {
+  fs.mkdirSync(templatesDir);
+}
+
+const templateToRun = process.argv[2];
+
+if (!templateToRun) {
+  console.error('Template to run not provided');
+  process.exit(1);
+}
+
+const pathToTemplate = path.join(templatesDir, templateToRun);
+
+if (!fs.existsSync(pathToTemplate)) {
+  console.error('Template provided does not exist');
+  process.exit(1);
+}
+
+const fileType = path.extname(pathToTemplate);
+
+if (fileType === '.js') {
+  return runScript('node', pathToTemplate);
+}
+
+console.error(`Unable to parse template of type: ${fileType}`);
+process.exit(1);
