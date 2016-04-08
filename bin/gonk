@@ -2,24 +2,11 @@
 
 'use strict';
 
-const path = require('path');
-const fs = require('fs');
-const config = require('../src/config');
+const scriptsDir = require('../src/scriptsDir');
 const scriptRunner = require('../src/scriptRunner');
+const scriptResolver = require('../src/scriptResolver');
 
-function existsSync(path) {
-  try {
-    return !!fs.statSync(path);
-  } catch (e) {
-    return false;
-  }
-}
-
-const scriptsDir = config.scriptsDir;
-
-if (!existsSync(scriptsDir)) {
-  fs.mkdirSync(scriptsDir);
-}
+scriptsDir.ensureExists();
 
 const scriptToRun = process.argv[2];
 
@@ -28,21 +15,15 @@ if (!scriptToRun) {
   process.exit(1);
 }
 
-let pathToScript = path.join(scriptsDir, scriptToRun);
+const pathToScript = scriptResolver.resolve(scriptToRun);
 
-if (!existsSync(pathToScript)) {
-  if (existsSync(`${pathToScript}.js`)) {
-    pathToScript += '.js';
-  } else {
-    console.error('Script provided does not exist');
-    process.exit(1);
-  }
+if (!pathToScript) {
+  console.error('Script provided does not exist');
+  process.exit(1);
 }
 
-const fileType = path.extname(pathToScript);
-
-if (fileType === '.js') {
-  return scriptRunner.run('node', pathToScript, process.argv.slice(3));
+if (pathToScript.ext === '.js') {
+  return scriptRunner.run('node', pathToScript.path, process.argv.slice(3));
 }
 
 console.error(`Unable to parse script of type: ${fileType}`);
