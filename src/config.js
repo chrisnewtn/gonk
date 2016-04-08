@@ -7,5 +7,5 @@ function getUserHome() {
 }
 
 Object.assign(exports, {
-    scriptsDir: process.env.GONK_SCRIPTS_DIR || path.join(getUserHome(), '.gonk-scripts')
+  scriptsDir: process.env.GONK_SCRIPTS_DIR || path.join(getUserHome(), '.gonk-scripts')
 });
