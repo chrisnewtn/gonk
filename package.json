@@ -1,0 +1,27 @@
+{
+  "name": "gonk",
+  "version": "0.0.0",
+  "description": "A script runner that sits on your path",
+  "main": "index.js",
+  "bin": "./bin/gonk",
+  "scripts": {
+    "test": "tape test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chrisnewtn/gonk.git"
+  },
+  "keywords": [
+    "script",
+    "runner"
+  ],
+  "author": "Chris Newton <chrisnewtn@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/chrisnewtn/gonk/issues"
+  },
+  "homepage": "https://github.com/chrisnewtn/gonk#readme",
+  "devDependencies": {
+    "tape": "^4.5.1"
+  }
+}
