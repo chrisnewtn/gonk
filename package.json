@@ -1,6 +1,6 @@
 {
   "name": "gonk",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A script runner that sits on your path",
   "main": "index.js",
   "bin": "./bin/gonk",
