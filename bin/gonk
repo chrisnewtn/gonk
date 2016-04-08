@@ -6,8 +6,8 @@ const path = require('path');
 const fs = require('fs');
 const spawn = require('child_process').spawn;
 
-function runScript(runner, pathToTemplate) {
-  const args = [pathToTemplate].concat(process.argv.slice(3));
+function runScript(runner, pathToScript) {
+  const args = [pathToScript].concat(process.argv.slice(3));
   const options = {stdio: 'inherit'};
   spawn(runner, args, options).on('close', process.exit);
 }
@@ -16,31 +16,31 @@ function getUserHome() {
   return process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME'];
 }
 
-const templatesDir = process.env.TEMPLATE_DIRECTORY || path.join(getUserHome(), '.gonk-scripts');
+const scriptsDir = process.env.TEMPLATE_DIRECTORY || path.join(getUserHome(), '.gonk-scripts');
 
-if (!fs.existsSync(templatesDir)) {
-  fs.mkdirSync(templatesDir);
+if (!fs.existsSync(scriptsDir)) {
+  fs.mkdirSync(scriptsDir);
 }
 
-const templateToRun = process.argv[2];
+const scriptToRun = process.argv[2];
 
-if (!templateToRun) {
-  console.error('Template to run not provided');
+if (!scriptToRun) {
+  console.error('Script to run not provided');
   process.exit(1);
 }
 
-const pathToTemplate = path.join(templatesDir, templateToRun);
+const pathToScript = path.join(scriptsDir, scriptToRun);
 
-if (!fs.existsSync(pathToTemplate)) {
-  console.error('Template provided does not exist');
+if (!fs.existsSync(pathToScript)) {
+  console.error('Script provided does not exist');
   process.exit(1);
 }
 
-const fileType = path.extname(pathToTemplate);
+const fileType = path.extname(pathToScript);
 
 if (fileType === '.js') {
-  return runScript('node', pathToTemplate);
+  return runScript('node', pathToScript);
 }
 
-console.error(`Unable to parse template of type: ${fileType}`);
+console.error(`Unable to parse script of type: ${fileType}`);
 process.exit(1);
