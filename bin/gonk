@@ -37,11 +37,15 @@ if (!scriptToRun) {
   process.exit(1);
 }
 
-const pathToScript = path.join(scriptsDir, scriptToRun);
+let pathToScript = path.join(scriptsDir, scriptToRun);
 
 if (!existsSync(pathToScript)) {
-  console.error('Script provided does not exist');
-  process.exit(1);
+  if (existsSync(`${pathToScript}.js`)) {
+    pathToScript += '.js';
+  } else {
+    console.error('Script provided does not exist');
+    process.exit(1);
+  }
 }
 
 const fileType = path.extname(pathToScript);
