@@ -6,7 +6,7 @@
   "bin": "./bin/gonk",
   "preferGlobal": true,
   "scripts": {
-    "test": "tape test.js"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -23,6 +23,8 @@
   },
   "homepage": "https://github.com/chrisnewtn/gonk#readme",
   "devDependencies": {
-    "tape": "^4.5.1"
+    "mocha": "^2.4.5",
+    "sandboxed-module": "^2.0.3",
+    "sinon": "^1.17.3"
   }
 }
