@@ -18,7 +18,10 @@ function existsSync(path) {
 function runScript(runner, pathToScript) {
   const args = [pathToScript].concat(process.argv.slice(3));
   const options = {stdio: 'inherit'};
-  spawn(runner, args, options).on('close', process.exit);
+  spawn(runner, args, options).on('close', exitCode => {
+    const gonk = fs.readFileSync(path.resolve(__dirname, '../src/gonk.txt'), {encoding: 'utf8'});
+    console.log(gonk);
+  });
 }
 
 const scriptsDir = config.scriptsDir;
