@@ -11,21 +11,21 @@ function runCli(process) {
 
   if (!scriptToRun) {
     console.error('Script to run not provided');
-    process.exit(1);
+    return process.exit(1);
   }
 
   const pathToScript = scriptResolver.resolve(scriptToRun);
 
   if (!pathToScript) {
     console.error('Script provided does not exist');
-    process.exit(1);
+    return process.exit(1);
   }
 
   if (pathToScript.ext === '.js') {
     return scriptRunner.run('node', pathToScript.path, process.argv.slice(3));
   }
 
-  console.error(`Unable to parse script of type: ${fileType}`);
+  console.error(`Unable to parse script of type: ${pathToScript.ext}`);
   process.exit(1);
 }
 
