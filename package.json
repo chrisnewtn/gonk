@@ -4,6 +4,7 @@
   "description": "A script runner that sits on your path",
   "main": "index.js",
   "bin": "./bin/gonk",
+  "preferGlobal": true,
   "scripts": {
     "test": "tape test.js"
   },
