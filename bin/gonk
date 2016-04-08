@@ -4,8 +4,8 @@
 
 const path = require('path');
 const fs = require('fs');
-const spawn = require('child_process').spawn;
 const config = require('../src/config');
+const scriptRunner = require('../src/scriptRunner');
 
 function existsSync(path) {
   try {
@@ -13,22 +13,6 @@ function existsSync(path) {
   } catch (e) {
     return false;
   }
-}
-
-function runScript(runner, pathToScript) {
-  const args = [pathToScript].concat(process.argv.slice(3));
-
-  const options = {
-    stdio: 'inherit',
-    env: Object.assign({}, process.env, {
-      GONK_PATH: path.resolve(__dirname, '../')
-    })
-  };
-
-  spawn(runner, args, options).on('close', exitCode => {
-    const gonk = fs.readFileSync(path.resolve(__dirname, '../src/gonk.txt'), {encoding: 'utf8'});
-    console.log(gonk);
-  });
 }
 
 const scriptsDir = config.scriptsDir;
@@ -58,7 +42,7 @@ if (!existsSync(pathToScript)) {
 const fileType = path.extname(pathToScript);
 
 if (fileType === '.js') {
-  return runScript('node', pathToScript);
+  return scriptRunner.run('node', pathToScript, process.argv.slice(3));
 }
 
 console.error(`Unable to parse script of type: ${fileType}`);
