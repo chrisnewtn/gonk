@@ -1,8 +1,8 @@
 'use strict';
 
-const fs = require('fs');
 const path = require('path');
 const spawn = require('child_process').spawn;
+const gonkPrinter = require('./gonkPrinter');
 
 function runScript(runner, pathToScript, argv) {
   const args = [pathToScript].concat(argv);
@@ -15,8 +15,8 @@ function runScript(runner, pathToScript, argv) {
   };
 
   spawn(runner, args, options).on('close', exitCode => {
-    const gonk = fs.readFileSync(path.resolve(__dirname, '../src/gonk.txt'), {encoding: 'utf8'});
-    console.log(gonk);
+    gonkPrinter.print();
+    process.exit(exitCode);
   });
 }
 
