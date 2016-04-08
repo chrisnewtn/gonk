@@ -15,7 +15,9 @@ function runScript(runner, pathToScript, argv) {
   };
 
   spawn(runner, args, options).on('close', exitCode => {
-    gonkPrinter.print();
+    if (exitCode === 0) {
+      gonkPrinter.print();
+    }
     process.exit(exitCode);
   });
 }
