@@ -7,6 +7,14 @@ const fs = require('fs');
 const spawn = require('child_process').spawn;
 const config = require('../src/config');
 
+function existsSync(path) {
+  try {
+    return !!fs.statSync(path);
+  } catch (e) {
+    return false;
+  }
+}
+
 function runScript(runner, pathToScript) {
   const args = [pathToScript].concat(process.argv.slice(3));
   const options = {stdio: 'inherit'};
@@ -15,7 +23,7 @@ function runScript(runner, pathToScript) {
 
 const scriptsDir = config.scriptsDir;
 
-if (!fs.existsSync(scriptsDir)) {
+if (!existsSync(scriptsDir)) {
   fs.mkdirSync(scriptsDir);
 }
 
@@ -28,7 +36,7 @@ if (!scriptToRun) {
 
 const pathToScript = path.join(scriptsDir, scriptToRun);
 
-if (!fs.existsSync(pathToScript)) {
+if (!existsSync(pathToScript)) {
   console.error('Script provided does not exist');
   process.exit(1);
 }
