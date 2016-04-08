@@ -5,6 +5,7 @@
 const path = require('path');
 const fs = require('fs');
 const spawn = require('child_process').spawn;
+const config = require('../src/config');
 
 function runScript(runner, pathToScript) {
   const args = [pathToScript].concat(process.argv.slice(3));
@@ -12,11 +13,7 @@ function runScript(runner, pathToScript) {
   spawn(runner, args, options).on('close', process.exit);
 }
 
-function getUserHome() {
-  return process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME'];
-}
-
-const scriptsDir = process.env.TEMPLATE_DIRECTORY || path.join(getUserHome(), '.gonk-scripts');
+const scriptsDir = config.scriptsDir;
 
 if (!fs.existsSync(scriptsDir)) {
   fs.mkdirSync(scriptsDir);
