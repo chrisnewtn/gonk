@@ -3,10 +3,10 @@
 const fs = require('fs');
 const path = require('path');
 
-const gonk = fs.readFileSync(path.resolve(__dirname, './gonk.txt'), {encoding: 'utf8'});
+const gonk = fs.readFileSync(path.resolve(__dirname, 'gonk.txt'), {encoding: 'utf8'});
 
 function prinkGonk() {
-  console.log(gonk);
+  process.stdout.write(gonk);
 }
 
 exports.print = prinkGonk;
